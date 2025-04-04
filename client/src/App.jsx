@@ -6,9 +6,10 @@ import { useAuthStore } from "./store/useAuthStore";
 import { Loader } from "lucide-react";
 import { Bounce, ToastContainer } from "react-toastify";
 import NotFoundPage from "./pages/NotFoundPage";
+import { useThemeStore } from "./store/useThemeStore";
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-
+  const { theme } = useThemeStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -21,7 +22,7 @@ function App() {
       </div>
     );
   return (
-    <div>
+    <div data-theme={theme}>
       <Navbar />
       <Routes>
         <Route
@@ -36,7 +37,10 @@ function App() {
           path="/login"
           element={!authUser ? <Page.LoginPage /> : <Navigate to="/" />}
         />
-        <Route path="/settings" element={<Page.SettingsPage />} />
+        <Route
+          path="/settings"
+          element={authUser ? <Page.SettingsPage /> : <Navigate to="/login" />}
+        />
         <Route
           path="/profile"
           element={authUser ? <Page.ProfilePage /> : <Navigate to="/login" />}

@@ -112,8 +112,18 @@ export const updateProfile = async (req, res) => {
         message: "Profile picture is required",
       });
     }
+    // const imageSizeInBytes = Buffer.byteLength(profilePic, "base64");
+    // const imageSizeInMB = imageSizeInBytes / 1024;
 
+    // console.log("Dung lượng ảnh:", imageSizeInMB, "MB");
+
+    // if (imageSizeInMB > 100) {
+    //   return res.status(413).json({
+    //     message: "Image under 100KB",
+    //   });
+    // }
     const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { profilePic: uploadResponse.secure_url },
